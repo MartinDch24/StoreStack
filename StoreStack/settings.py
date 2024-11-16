@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 
 MY_APPS = [
     'accounts.apps.AccountsConfig',
+    'common.apps.CommonConfig',
 ]
 
 INSTALLED_APPS = [

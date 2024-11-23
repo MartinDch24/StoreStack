@@ -18,6 +18,6 @@ class Product(models.Model):
 
     def delete(self, *args, **kwargs):
         public_ids = [f"{self.image}"]
-        image_delete_result = cloudinary.api.delete_resources(public_ids, resource_type="image", type="upload")
+        cloudinary.api.delete_resources(public_ids, resource_type="image", type="upload")
         cloudinary.api.delete_folder(f"products/{self.name}")
         super().delete(*args, **kwargs)

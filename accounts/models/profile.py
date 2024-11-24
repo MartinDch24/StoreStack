@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 
 class Profile(models.Model):
@@ -8,7 +9,7 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name='profile',
     )
-    profile_picture = models.ImageField(upload_to='media/profile-pictures')
+    profile_picture = CloudinaryField('image', folder='profile-pictures', blank=True, null=True)
     bio = models.TextField()
 
     address_line_1 = models.CharField(max_length=255, blank=True, null=True)

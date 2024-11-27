@@ -1,10 +1,12 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 
-from accounts.forms import UserRegistrationForm, UserLoginForm
+from accounts.forms import UserRegistrationForm, UserLoginForm, ProfileEditForm
+from accounts.models import Profile
 
 
 class UserRegistrationView(FormView):
@@ -23,5 +25,25 @@ class UserLoginView(LoginView):
     form_class = UserLoginForm
 
 
-class UserLogoutView(LogoutView):
-    template_name = 'account/logout.html'
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    template_name = "accounts/profile-detail.html"
+    model = Profile
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+
+class ProfileEditView(LoginRequiredMixin, FormView):
+    template_name = "accounts/profile-edit.html"
+    form_class = ProfileEditForm
+    success_url = reverse_lazy('profile-detail')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['instance'] = self.request.user.profile
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

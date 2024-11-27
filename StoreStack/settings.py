@@ -147,6 +147,7 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'dash'
+LOGOUT_REDIRECT_URL = 'home'
 
 cloudinary.config(
     cloud_name=config('CLOUD_NAME'),

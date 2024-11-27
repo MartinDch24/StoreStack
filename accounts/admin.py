@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from accounts.models import StoreStackUser
+from accounts.models import StoreStackUser, Profile
 
 
 @admin.register(StoreStackUser)
@@ -35,3 +35,8 @@ class StoreStackUserAdmin(UserAdmin):
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
         ('User Type', {'fields': ('user_type',)}),
     )
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    pass

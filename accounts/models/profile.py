@@ -10,7 +10,7 @@ class Profile(models.Model):
         related_name='profile',
     )
     profile_picture = CloudinaryField('image', folder='profile-pictures', blank=True, null=True)
-    bio = models.TextField()
+    bio = models.TextField(blank=True, null=True, max_length=500)
 
     address_line_1 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)

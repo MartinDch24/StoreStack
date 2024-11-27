@@ -7,11 +7,8 @@ UserModel = get_user_model()
 
 
 @receiver(post_save, sender=UserModel)
-def create_user_profile(sender, instance, created, **kwargs):
+def manage_user_profile(sender, instance: UserModel, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=UserModel)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    else:
+        instance.profile.save()

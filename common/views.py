@@ -10,5 +10,4 @@ class DashboardView(ListView):
     model = Product
     template_name = 'common/dashboard.html'
     context_object_name = 'products'
-    paginate_by = 12
-
+    paginate_by = 5

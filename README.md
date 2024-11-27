@@ -1,1 +1,1 @@
-This project was created for the exam of the course "Django Advanced" at SoftUni.
+[README.txt](https://github.com/user-attachments/files/17940889/README.txt)

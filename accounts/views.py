@@ -1,12 +1,14 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render
+from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, DeleteView
 
 from accounts.forms import UserRegistrationForm, UserLoginForm, ProfileEditForm
 from accounts.models import Profile
+
+
+UserModel = get_user_model()
 
 
 class UserRegistrationView(FormView):
@@ -47,3 +49,12 @@ class ProfileEditView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
+    model = UserModel
+    template_name = 'accounts/profile-delete.html'
+    success_url = reverse_lazy('dash')
+
+    def get_object(self, queryset=None):
+        return self.request.user

@@ -13,7 +13,6 @@ class Profile(models.Model):
     )
     profile_picture = CloudinaryField('image', folder='profile-pictures', blank=True, null=True)
     bio = models.TextField(blank=True, null=True, max_length=500)
-
     address_line_1 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     postal_code = models.CharField(max_length=10, blank=True, null=True)

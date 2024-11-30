@@ -70,7 +70,7 @@ class ProfileEditForm(forms.ModelForm):
         password1 = cleaned_data.get("password1")
         password2 = cleaned_data.get("password2")
 
-        if password1 or password2 and password1 != password2:
+        if password1 or password2:
             if password1 != password2:
                 raise forms.ValidationError("The two password fields didn’t match.")
             validate_password(password1, self.user)

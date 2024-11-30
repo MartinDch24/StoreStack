@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
-
+from accounts.models import Profile
 from accounts.choices import UserType
 
 
@@ -28,10 +28,6 @@ class UserLoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}),
     )
 
-
-from django import forms
-from django.contrib.auth import get_user_model
-from accounts.models import Profile
 
 User = get_user_model()
 

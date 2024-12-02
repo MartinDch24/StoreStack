@@ -25,8 +25,9 @@ class Profile(models.Model):
             self.postal_code = self.postal_code.strip()
 
         postal_code_regex = r'^[A-Za-z0-9][A-Za-z0-9\s\-]{3,9}$'
-        if not re.match(postal_code_regex, self.postal_code):
+        if self.postal_code and not re.match(postal_code_regex, self.postal_code):
             raise ValidationError({'postal_code': 'Invalid postal code format. Please enter a valid postal code.'})
+
 
     def __str__(self):
         return f"Profile of {self.user.username}"

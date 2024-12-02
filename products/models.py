@@ -18,10 +18,11 @@ class Product(models.Model):
         return self.name
 
     def delete(self, *args, **kwargs):
-        public_ids = [f"{self.image}"]
-        try:
-            cloudinary.api.delete_resources(public_ids, resource_type="image", type="upload")
-            cloudinary.api.delete_folder(f"products/{self.name}")
-        except ApiError as e:
-            print(f"Error deleting Cloudinary resources: {e}")
-        super().delete(*args, **kwargs)
+        if self.image:
+            public_ids = [f"{self.image}"]
+            try:
+                cloudinary.api.delete_resources(public_ids, resource_type="image", type="upload")
+                cloudinary.api.delete_folder(f"products/{self.name}")
+            except ApiError as e:
+                print(f"Error deleting Cloudinary resources: {e}")
+        return super().delete(*args, **kwargs)

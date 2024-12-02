@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="dashboard">
-    <h1>StoreStack Dashboard</h1>
+    <h1>Available Products</h1>
 
     {% if products %}
 
@@ -13,7 +13,13 @@
             {% cloudinary product.image width=300 height=300 crop="pad" %}
             <h2>{{ product.name }}</h2>
             <p>${{ product.price }}</p>
+
+            {% if product.stock %}
             <p>{{ product.stock }} in stock</p>
+            {% else %}
+            <p>Out of stock</p>
+            {% endif %}
+
             <a href="{# url 'product_detail' product.id #}" class="btn">View Details</a>
             <a href="#" class="btn btn-add-to-cart">Add to Cart</a>
         </div>
@@ -21,12 +27,14 @@
     </div>
 
     <div class="pagination">
-        {% if products.has_previous %}
-        <a href="?page={{ products.previous_page_number }}">&laquo; Previous</a>
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
         {% endif %}
+
         <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-        {% if products.has_next %}
-        <a href="?page={{ products.next_page_number }}">Next &raquo;</a>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
         {% endif %}
     </div>
     {% else %}

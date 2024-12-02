@@ -1,8 +1,12 @@
 from cloudinary.models import CloudinaryField
 import cloudinary
 from cloudinary.exceptions import Error as ApiError
+from django.contrib.auth import get_user_model
 from django.db import models
 from StoreStack.utils import product_image_folder
+
+
+UserModel = get_user_model()
 
 
 class Product(models.Model):
@@ -11,6 +15,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stock = models.PositiveIntegerField(default=0)
     image = CloudinaryField('image', folder=product_image_folder, blank=True, null=True)
+    seller = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='products')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

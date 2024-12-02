@@ -1,12 +1,13 @@
 <nav>
     <div class="container">
-        <a href="/" class="logo">StoreStack</a>
+        <a href="{% url 'home' %}" class="logo">StoreStack</a>
         <ul class="nav-links">
             <li><a href="{% url 'dash' %}">Shop</a></li>
         {% if not user.is_authenticated %}
             <li><a href="{% url 'login' %}">Login</a></li>
             <li><a href="{% url 'register' %}">Register</a></li>
         {% else %}
+            <li><a href="{% url 'user-products' %}">My Products</a></li>
             <li><a href="{% url 'profile-detail' %}">Profile</a></li>
         {% endif %}    
         </ul>

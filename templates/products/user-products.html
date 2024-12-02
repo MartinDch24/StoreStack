@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load cloudinary %}
+
+{% block content %}
+<h1>My Products</h1>
+
+{% if products %}
+    <div class="products-grid">
+        {% for product in products %}
+            <div class="product-card">
+            {% cloudinary product.image width=500 height=500 crop="pad" %}
+                <div class="product-details">
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                    <p class="product-price">Price: ${{ product.price }}</p>
+                    <p class="product-stock">Stock: {{ product.stock }}</p>
+                    <p class="product-seller">Seller: {{ product.seller.username }}</p>
+                    <a href="{# url 'product-edit' product.pk #}" class="btn">Edit</a>
+                    <a href="{# url 'product-delete' product.pk #}" class="btn">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="empty-state">You haven't created any products yet.</p>
+{% endif %}
+
+<div class="create-product-link">
+    <a href="{% url 'product-add' %}">Create a New Product</a>
+</div>
+
+{% endblock %}

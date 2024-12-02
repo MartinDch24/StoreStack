@@ -28,6 +28,5 @@ class Profile(models.Model):
         if self.postal_code and not re.match(postal_code_regex, self.postal_code):
             raise ValidationError({'postal_code': 'Invalid postal code format. Please enter a valid postal code.'})
 
-
     def __str__(self):
         return f"Profile of {self.user.username}"

@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
 from accounts.models import Profile
 from accounts.choices import UserType
+import cloudinary
+from cloudinary.exceptions import Error as ApiError
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -33,8 +35,8 @@ User = get_user_model()
 
 
 class ProfileEditForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=30, required=False, label="First Name")
-    last_name = forms.CharField(max_length=30, required=False, label="Last Name")
+    first_name = forms.CharField(max_length=30, required=True, label="First Name")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
     email = forms.EmailField(required=True, label="Email")
     password1 = forms.CharField(
         label="New Password",
@@ -74,6 +76,15 @@ class ProfileEditForm(forms.ModelForm):
 
     def save(self, commit=True):
         profile = super().save(commit=False)
+
+        if self.instance.pk:
+            old_instance = Profile.objects.get(pk=self.instance.pk)
+            if old_instance.profile_picture and old_instance.profile_picture != self.instance.profile_picture:
+                try:
+                    public_id = old_instance.profile_picture
+                    cloudinary.api.delete_resources([public_id], resource_type="image", type="upload")
+                except ApiError as e:
+                    print(f"Error deleting Cloudinary resources: {e}")
 
         if self.user:
             self.user.first_name = self.cleaned_data['first_name']

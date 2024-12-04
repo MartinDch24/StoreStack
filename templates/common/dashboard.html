@@ -10,7 +10,7 @@
     <div class="products-grid">
         {% for product in products %}
         <div class="product-card">
-            {% cloudinary product.image width=300 height=300 crop="pad" %}
+            <a href="{% url 'product-detail' product.id %}">{% cloudinary product.image width=300 height=300 crop="pad" %}</a>
             <h2>{{ product.name }}</h2>
             <p>${{ product.price }}</p>
 
@@ -20,7 +20,7 @@
             <p>Out of stock</p>
             {% endif %}
 
-            <a href="{# url 'product_detail' product.id #}" class="btn">View Details</a>
+            <a href="{% url 'product-detail' product.id %}" class="btn">View Details</a>
             <a href="#" class="btn btn-add-to-cart">Add to Cart</a>
         </div>
         {% endfor %}

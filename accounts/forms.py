@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 from accounts.models import Profile
 from accounts.choices import UserType
 import cloudinary
@@ -73,6 +75,18 @@ class ProfileEditForm(forms.ModelForm):
                 raise forms.ValidationError("The two password fields didn’t match.")
             validate_password(password1, self.user)
         return cleaned_data
+
+    def clean_profile_picture(self):
+        profile_picture = self.cleaned_data.get('profile_picture')
+
+        if isinstance(profile_picture, cloudinary.CloudinaryResource):
+            return profile_picture
+        elif profile_picture:
+            if not profile_picture.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
+                raise ValidationError("The profile picture must be a valid image format (JPEG, PNG, GIF or WEBP).")
+        else:
+            raise ValidationError("Invalid file format.")
+        return profile_picture
 
     def save(self, commit=True):
         profile = super().save(commit=False)

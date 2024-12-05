@@ -7,7 +7,9 @@
             <li><a href="{% url 'login' %}">Login</a></li>
             <li><a href="{% url 'register' %}">Register</a></li>
         {% else %}
-            <li><a href="{% url 'user-products' %}">My Products</a></li>
+            {% if perms.products.add_product %}
+                <li><a href="{% url 'user-products' %}">My Products</a></li>
+            {% endif %}    
             <li><a href="{% url 'profile-detail' %}">Profile</a></li>
         {% endif %}    
         </ul>

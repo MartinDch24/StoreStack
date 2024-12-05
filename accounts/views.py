@@ -1,6 +1,7 @@
 from django.contrib.auth import login, get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import FormView, DetailView, DeleteView
 
@@ -21,24 +22,36 @@ class UserRegistrationView(FormView):
         login(self.request, user)
         return super().form_valid(form)
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('profile-detail')
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UserLoginView(LoginView):
     template_name = 'accounts/login.html'
     form_class = UserLoginForm
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('profile-detail')
+        return super().dispatch(request, *args, **kwargs)
 
-class ProfileDetailView(LoginRequiredMixin, DetailView):
+
+class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = "accounts/profile-detail.html"
     model = Profile
+    permission_required = 'accounts.view_profile'
 
     def get_object(self, queryset=None):
         return self.request.user.profile
 
 
-class ProfileEditView(LoginRequiredMixin, FormView):
+class ProfileEditView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = "accounts/profile-edit.html"
     form_class = ProfileEditForm
     success_url = reverse_lazy('profile-detail')
+    permission_required = 'accounts.change_profile'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -51,10 +64,11 @@ class ProfileEditView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class ProfileDeleteView(LoginRequiredMixin, DeleteView):
+class ProfileDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = UserModel
     template_name = 'accounts/profile-delete.html'
     success_url = reverse_lazy('dash')
+    permission_required = 'accounts.delete_profile'
 
     def get_object(self, queryset=None):
         return self.request.user

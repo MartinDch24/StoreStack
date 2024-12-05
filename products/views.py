@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -9,22 +9,24 @@ from products.models import Product
 from products.forms import ProductCreateForm, ProductEditForm
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductCreateForm
     template_name = 'products/product-add.html'
     success_url = reverse_lazy('dash')
+    permission_required = 'products.add_product'
 
     def form_valid(self, form):
         form.instance.seller = self.request.user
         return super().form_valid(form)
 
 
-class UserProductsView(LoginRequiredMixin, ListView):
+class UserProductsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Product
     template_name = 'products/user-products.html'
     context_object_name = 'products'
     paginate_by = 5
+    permission_required = 'products.add_product'
 
     def get_queryset(self):
         return Product.objects.filter(seller=self.request.user)
@@ -36,12 +38,13 @@ class ProductDetailView(DetailView):
     context_object_name = 'product'
 
 
-class ProductEditView(UpdateView, LoginRequiredMixin):
+class ProductEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductEditForm
     template_name = 'products/product-edit.html'
     context_object_name = 'product'
     success_url = reverse_lazy('user-products')
+    permission_required = 'products.change_product'
 
     def dispatch(self, request, *args, **kwargs):
         product = self.get_object()
@@ -52,11 +55,12 @@ class ProductEditView(UpdateView, LoginRequiredMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = 'products/product-delete.html'
     context_object_name = 'product'
     success_url = reverse_lazy('dash')
+    permission_required = 'products.delete_product'
 
     def dispatch(self, request, *args, **kwargs):
         product = self.get_object()

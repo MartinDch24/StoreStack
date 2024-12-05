@@ -12,7 +12,7 @@ from cloudinary.exceptions import Error as ApiError
 
 class UserRegistrationForm(UserCreationForm):
     user_type = forms.ChoiceField(
-        choices=[(UserType.BUYER, 'Buyer'), (UserType.SELLER, 'Seller')],
+        choices=UserType.choices,
         label="User Type",
         help_text="Select your account type."
     )

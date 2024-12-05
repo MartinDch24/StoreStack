@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Are you sure you want to delete this product?</h2>
+  <div>
+    <p><strong>{{ product.name }}</strong></p>
+    <p>{{ product.description }}</p>
+    <p>Price: ${{ product.price }}</p>
+    <form method="POST">
+      {% csrf_token %}
+          <div class="actions">
+              <button class="btn btn-buy" type="submit">Yes, delete it</button>
+              <a href="{% url 'dash' %}" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+  </div>
+{% endblock %}

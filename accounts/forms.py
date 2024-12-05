@@ -12,7 +12,7 @@ from cloudinary.exceptions import Error as ApiError
 
 class UserRegistrationForm(UserCreationForm):
     user_type = forms.ChoiceField(
-        choices=UserType.choices,
+        choices=[(UserType.BUYER, 'Buyer'), (UserType.SELLER, 'Seller')],
         label="User Type",
         help_text="Select your account type."
     )
@@ -85,7 +85,7 @@ class ProfileEditForm(forms.ModelForm):
             if not profile_picture.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
                 raise ValidationError("The profile picture must be a valid image format (JPEG, PNG, GIF or WEBP).")
         else:
-            raise ValidationError("Invalid file format.")
+            return None
         return profile_picture
 
     def save(self, commit=True):

@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from products.models import Product
 from products.forms import ProductCreateForm, ProductEditForm
 
@@ -46,8 +47,22 @@ class ProductEditView(UpdateView, LoginRequiredMixin):
         product = self.get_object()
 
         if product.seller != self.request.user:
-            messages.error(self.request, 'You are not authorized to edit this product.')
-
-            return redirect('dash')
+            return redirect('home')
 
         return super().dispatch(request, *args, **kwargs)
+
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    model = Product
+    template_name = 'products/product-delete.html'
+    context_object_name = 'product'
+    success_url = reverse_lazy('dash')
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+
+        if product.seller != self.request.user:
+            return redirect('home')
+
+        return super().dispatch(request, *args, **kwargs)
+

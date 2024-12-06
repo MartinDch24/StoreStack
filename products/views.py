@@ -21,9 +21,9 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
         return super().form_valid(form)
 
 
-class UserProductsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class SellerProductsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Product
-    template_name = 'products/user-products.html'
+    template_name = 'products/seller-products.html'
     context_object_name = 'products'
     paginate_by = 5
     permission_required = 'products.add_product'
@@ -43,7 +43,7 @@ class ProductEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     form_class = ProductEditForm
     template_name = 'products/product-edit.html'
     context_object_name = 'product'
-    success_url = reverse_lazy('user-products')
+    success_url = reverse_lazy('seller-products')
     permission_required = 'products.change_product'
 
     def dispatch(self, request, *args, **kwargs):

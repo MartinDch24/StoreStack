@@ -8,7 +8,7 @@
             <li><a href="{% url 'register' %}">Register</a></li>
         {% else %}
             {% if perms.products.add_product %}
-                <li><a href="{% url 'user-products' %}">My Products</a></li>
+                <li><a href="{% url 'seller-products' %}">My Products</a></li>
             {% endif %}    
             <li><a href="{% url 'profile-detail' %}">Profile</a></li>
         {% endif %}    

@@ -3,11 +3,15 @@
 
 {% block content %}
 <h1>{{ user.username }}</h1>
-{% cloudinary object.profile_picture width=300 height=300 crop="pad" alt="Profile Picture" class="profile-pic" %}
+{% cloudinary object.profile_picture width=350 height=250 crop="fit" alt="Profile Picture" class="profile-pic" %}
 <p><strong>First Name:</strong> {{ user.first_name }}</p>
 <p><strong>Last Name:</strong> {{ user.last_name }}</p>
 <p><strong>Email:</strong> {{ user.email }}</p>
-<p><strong>Bio:</strong> {{ object.bio }}</p>
+{% if object.bio %}
+    <p><strong>Bio:</strong> {{ object.bio }}</p>
+{% else %}
+    <p><strong>No added bio</strong></p>
+{%  endif %}
 <a href="{% url 'profile-edit' %}" class="btn btn-primary">Edit Profile</a>
 
 <div class="logout-container">

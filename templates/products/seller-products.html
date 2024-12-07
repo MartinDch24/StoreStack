@@ -22,13 +22,6 @@
             </div>
         {% endfor %}
     </div>
-{% else %}
-    <p class="empty-state">You haven't created any products yet.</p>
-{% endif %}
-
-<div class="create-product-link">
-    <a href="{% url 'product-add' %}">Create a New Product</a>
-</div>
 
 <div class="pagination">
     {% if page_obj.has_previous %}
@@ -42,4 +35,12 @@
     {% endif %}
 </div>
 
+{% else %}
+    <p class="empty-state">You haven't created any products yet.</p>
+{% endif %}
+    
+<div class="create-product-link">
+    <a href="{% url 'product-add' %}">Create a New Product</a>
+</div>
+    
 {% endblock %}

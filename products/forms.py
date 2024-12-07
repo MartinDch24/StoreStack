@@ -23,7 +23,7 @@ class ProductCreateForm(forms.ModelForm):
             if not image.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
                 raise ValidationError("The image must be a valid image format (JPEG, PNG, GIF or WEBP).")
         else:
-            raise ValidationError("Invalid file format.")
+            return None
         return image
 
 

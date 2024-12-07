@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
     'cloudinary',
     'cloudinary_storage',
-
+    'rest_framework',
 ] + MY_APPS
 
 AUTH_USER_MODEL = 'accounts.StoreStackUser'

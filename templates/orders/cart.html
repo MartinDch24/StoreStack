@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="cart-container">
+    <h1 class="cart-header">Your Cart</h1>
+    {% if order.items.exists %}
+
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td class="product-name">
+                    <a href="{% url 'product-detail' item.product.id %}">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        {{ item.product.name }}
+                    </a>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+                <td>${{ item.get_total_price }}</td>
+                <td class="product-actions">
+                    <a href="{% url 'single-product-checkout' item.product.id %}" class="btn buy-now-btn">Buy Now</a>
+                    <a href="{% url 'remove-from-cart' item.id %}" class="btn remove-btn">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="cart-actions">
+        <a href="{% url 'checkout' %}" class="btn">Proceed to Checkout</a>
+        <strong>Total price: ${{ order.get_total_cost }}</strong>
+        <a href="{% url 'dash' %}" class="btn">Continue Shopping</a>
+    </div>
+
+    {% else %}
+    <p>Your cart is empty. <a href="{% url 'dash' %}">Browse products</a> to add items to your cart.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

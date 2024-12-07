@@ -11,8 +11,8 @@
             <div class="product-card">
                 <a href="{% url 'product-detail' product.id %}">{% cloudinary product.image width=500 height=500 crop="pad" %}</a>
                 <div class="product-details">
-                    <h2>{{ product.name }}</h2>
-                    <p>{{ product.description }}</p>
+                    <h2>{{ product.name|truncatechars:"16" }}</h2>
+                    <p>{{ product.description|truncatewords:"7" }}</p>
                     <p class="product-price">Price: ${{ product.price }}</p>
                     <p class="product-stock">Stock: {{ product.stock }}</p>
                     <p class="product-seller">Seller: {{ product.seller.username }}</p>

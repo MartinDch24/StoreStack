@@ -3,12 +3,10 @@
 
 {% block content %}
 <div class="product-detail-page">
-  <!-- Left: Image Section -->
   <div class="product-image-section">
     {% cloudinary product.image width=1000 height=700 crop="fill" class="product-image" alt=product.name %}
   </div>
 
-  <!-- Right: Details Section -->
   <div class="product-details-section">
     <h1>{{ product.name }}</h1>
     <p class="product-price">${{ product.price }}</p>
@@ -22,8 +20,12 @@
     <p class="product-description">{{ product.description }}</p>
     <p>Seller: {{ product.seller.username }}</p>
     <div class="actions">
-      <button class="btn btn-buy">Buy Now</button>
-      <button class="btn btn-cart">Add to Cart</button>
+
+      <form method="post" action="{% url 'add-to-cart' product.id %}">
+        <a href="{% url 'single-product-checkout' product.pk %}" class="btn btn-buy">Buy Now</a>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-add-to-cart">Add to Cart</button>
+      </form>
     </div>
   </div>
 </div>

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="checkout-container">
+    <h1>Checkout</h1>
+
+    <div class="checkout-products">
+        {% if products %}
+            <table class="checkout-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in products %}
+                        <tr>
+                            <td>{{ item.product.name }}{{ item.name }}</td>
+                            <td>
+                                {% if item.quantity %}
+                                    {{ item.quantity }}
+                                {% elif item.stock %}
+                                    1
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>${{ item.product.price|floatformat:2 }}{{ item.price|floatformat:2 }}</td>
+                            <td>
+                                {% if item.get_total_price %}
+                                ${{ item.get_total_price|floatformat:2 }}
+                                {% elif item.stock %}
+                                ${{ item.price|floatformat:2 }}
+                                {% else %}
+                                ${{ 0|floatformat:2 }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No products in checkout.</p>
+        {% endif %}
+    </div>
+
+    <div class="checkout-summary">
+        <h2>Total: ${{ total_price|floatformat:2 }}</h2>
+    </div>
+
+    <form method="post" action="{# url 'confirm-checkout' #}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Confirm Purchase</button>
+    </form>
+</div>
+{% endblock %}

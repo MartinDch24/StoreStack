@@ -69,4 +69,3 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
             return redirect('home')
 
         return super().dispatch(request, *args, **kwargs)
-

@@ -9,7 +9,8 @@
         {% else %}
             {% if perms.products.add_product %}
                 <li><a href="{% url 'seller-products' %}">My Products</a></li>
-            {% endif %}    
+            {% endif %}
+            <li><a href="{% url 'cart' %}">Cart <i class="fas fa-shopping-cart"></i></a></li>
             <li><a href="{% url 'profile-detail' %}">Profile</a></li>
         {% endif %}    
         </ul>

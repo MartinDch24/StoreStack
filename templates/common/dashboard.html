@@ -11,7 +11,7 @@
         {% for product in products %}
         <div class="product-card">
             <a href="{% url 'product-detail' product.id %}">{% cloudinary product.image width=300 height=300 crop="pad" %}</a>
-            <h2>{{ product.name }}</h2>
+            <h2>{{ product.name|truncatechars:"16" }}</h2>
             <p>${{ product.price }}</p>
 
             {% if product.stock %}
@@ -20,8 +20,12 @@
             <p>Out of stock</p>
             {% endif %}
 
-            <a href="{% url 'product-detail' product.id %}" class="btn">View Details</a>
-            <a href="#" class="btn btn-add-to-cart">Add to Cart</a>
+            <form action="{% url 'add-to-cart' product.id %}" method="post" class="product-actions">
+                {% csrf_token %}
+                <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>
+                <a href="{% url 'product-detail' product.id %}" class="btn view-detail-btn">View Detail</a>
+            </form>
+
         </div>
         {% endfor %}
     </div>

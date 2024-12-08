@@ -37,6 +37,7 @@ MY_APPS = [
     'common.apps.CommonConfig',
     'orders.apps.OrdersConfig',
     'products.apps.ProductsConfig',
+    'payments.apps.PaymentsConfig',
 ]
 
 INSTALLED_APPS = [

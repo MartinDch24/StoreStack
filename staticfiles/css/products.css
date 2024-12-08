@@ -192,3 +192,43 @@
     max-width: 100%;
   }
 }
+
+.actions .btn-buy {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: auto;
+  margin-right: 10px;
+}
+
+.actions .btn-buy:hover {
+  background-color: #0056b3;
+}
+
+.actions .btn-add-to-cart {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: auto;
+}
+
+.actions .btn-add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+.actions form {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+}

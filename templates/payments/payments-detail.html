@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="payment-methods-page">
+  <h1>Your Payment Methods</h1>
+
+  <div class="actions">
+    <a href="{% url 'payment-add' %}" class="btn btn-primary">Add Payment Method</a>
+  </div>
+
+  {% if payment_methods %}
+  <div class="payment-methods-list">
+    {% for method in payment_methods %}
+    <div class="payment-method-card">
+      <h2>{{ method.card_type }}</h2>
+      <p>Card Number: **** **** **** {{ method.card_number|slice:"-4:" }}</p>
+      <p>Expiry: {{ method.formatted_expiry }}</p>
+        <div class="payment-method">
+            <a href="{% url 'payment-edit' method.pk %}" class="btn btn-primary btn-edit">Edit</a>
+            <a href="{% url 'payment-delete' method.pk %}" class="btn btn-danger btn-remove">Remove</a>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>You have no payment methods added. Click "Add Payment Method" to get started.</p>
+  {% endif %}
+</div>
+{% endblock %}

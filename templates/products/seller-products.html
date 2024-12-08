@@ -23,24 +23,27 @@
         {% endfor %}
     </div>
 
-<div class="pagination">
-    {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
-    {% endif %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
+        {% endif %}
 
-    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
-    {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
-    {% endif %}
-</div>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+        {% endif %}
+    </div>
 
 {% else %}
     <p class="empty-state">You haven't created any products yet.</p>
 {% endif %}
-    
+
 <div class="create-product-link">
     <a href="{% url 'product-add' %}">Create a New Product</a>
 </div>
-    
+<div class="ordered-products-link">
+    <a href="{% url 'ordered-products' %}">View Ordered Products</a>
+</div>
+
 {% endblock %}

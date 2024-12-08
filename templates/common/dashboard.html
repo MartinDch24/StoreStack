@@ -19,7 +19,7 @@
             {% else %}
             <p>Out of stock</p>
             {% endif %}
-
+            
             <form action="{% url 'add-to-cart' product.id %}" method="post" class="product-actions">
                 {% csrf_token %}
                 <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>

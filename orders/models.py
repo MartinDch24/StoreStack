@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
+from payments.models import PaymentMethod
 from products.models import Product
 from orders.choices import StatusChoices
 
@@ -9,6 +11,7 @@ User = get_user_model()
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=StatusChoices.choices, default=StatusChoices.PENDING)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE, related_name='orders', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

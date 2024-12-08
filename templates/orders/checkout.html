@@ -43,18 +43,29 @@
                     {% endfor %}
                 </tbody>
             </table>
-        {% else %}
-            <p>No products in checkout.</p>
-        {% endif %}
-    </div>
-
+        </div>
+            
     <div class="checkout-summary">
         <h2>Total: ${{ total_price|floatformat:2 }}</h2>
     </div>
 
-    <form method="post" action="{# url 'confirm-checkout' #}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Confirm Purchase</button>
-    </form>
+    <div class="payment-method-selection">
+        {% if user.payment_methods.count %}
+            <label for="payment_method">Select Payment Method: </label>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.payment_method }}
+                    <button type="submit" class="btn btn-primary">Confirm Purchase</button>
+                </form>
+        {% else %}
+            <a href="{% url 'payment-add' %}" class="btn btn-primary">Add Payment Method</a>
+        {% endif %}
+    </div>
+
+
+            
+    {% else %}
+        <p>No products in checkout.</p>
+    {% endif %}
 </div>
 {% endblock %}

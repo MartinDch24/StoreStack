@@ -7,7 +7,7 @@ UserModel = get_user_model()
 
 
 class PaymentMethod(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='payment_methods')
     card_type = models.CharField(max_length=20)
     card_number = models.CharField(max_length=16, validators=[MinLengthValidator(16)])
     expiry_month = models.PositiveIntegerField(

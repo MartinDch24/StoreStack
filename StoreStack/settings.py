@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 import cloudinary
@@ -25,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', config('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = os.getenv('DEBUG', config('DEBUG')) == "True"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', config('ALLOWED_HOSTS')).split(',')
 
 MY_APPS = [
     'accounts.apps.AccountsConfig',
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'rest_framework',
+    'whitenoise.runserver_nostatic',
 
 ] + MY_APPS
 
@@ -58,6 +59,7 @@ AUTH_USER_MODEL = 'accounts.StoreStackUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -93,12 +95,12 @@ WSGI_APPLICATION = 'StoreStack.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default=5432, cast=int),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv('DB_NAME', config('DB_NAME')),
+        "USER": os.getenv('DB_USER', config('DB_USER')),
+        "PASSWORD": os.getenv('DB_PASSWORD', config('DB_PASSWORD')),
+        "HOST": os.getenv('DB_HOST', config('DB_HOST')),
+        "PORT": os.getenv('DB_PORT', config('DB_PORT')),
     }
 }
 
@@ -137,8 +139,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "staticfiles",
+]
+
+STATIC_ROOT = BASE_DIR / "static_files"
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

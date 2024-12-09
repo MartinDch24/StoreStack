@@ -1,0 +1,234 @@
+.product-detail-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px;
+  gap: 20px;
+}
+
+.product-image-section {
+  flex: 0 0 45%;
+  max-width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 400px;
+  width: 100%;
+}
+
+.product-image-section img {
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.product-details-section {
+  flex: 0 0 50%;
+  max-width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-details-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.product-price {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.product-stock {
+  font-size: 1.2rem;
+  color: #e57a45;
+  margin-bottom: 20px;
+}
+
+.product-description {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.actions .btn-buy {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.actions .btn-buy:hover {
+  background-color: #0056b3;
+}
+
+.actions form {
+  margin: 0;
+}
+
+.actions form .btn-add-to-cart {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.actions form .btn-add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+
+.product-details-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: stretch;
+  }
+}
+
+.btn-buy {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-buy:hover {
+  background-color: #0056b3;
+}
+
+.btn-cart {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-cart:hover {
+  background-color: #0056b3;
+}
+
+.out-of-stock {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+@media (max-width: 1200px) {
+  .product-detail-page {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .product-image-section {
+    flex: 0 0 45%;
+    max-width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 300px;
+    width: 100%;
+  }
+
+  .product-image-section img {
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-detail-page {
+    padding: 20px;
+  }
+
+  .product-image-section {
+    max-width: 100%;
+    height: 250px;
+  }
+
+  .product-details-section {
+    max-width: 100%;
+  }
+}
+
+.actions .btn-buy {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: auto;
+  margin-right: 10px;
+}
+
+.actions .btn-buy:hover {
+  background-color: #0056b3;
+}
+
+.actions .btn-add-to-cart {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: auto;
+}
+
+.actions .btn-add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+.actions form {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+}

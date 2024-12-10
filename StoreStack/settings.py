@@ -32,6 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', config('ALLOWED_HOSTS')).split(',')
 
+CSRF_TRUSTED_ORIGINS = ['https://storestack-acgyeff6g5cabqhz.italynorth-01.azurewebsites.net']
+
 MY_APPS = [
     'accounts.apps.AccountsConfig',
     'common.apps.CommonConfig',

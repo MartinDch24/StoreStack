@@ -10,7 +10,8 @@ class StoreStackUser(AbstractUser):
     user_type = models.CharField(
         max_length=10,
         choices=UserType.choices,
-        default=UserType.BUYER
+        null=True,
+        blank=True,
     )
 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']

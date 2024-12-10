@@ -112,7 +112,7 @@ class CheckoutView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
         return redirect('dash')
 
 
-class MyOrdersView(LoginRequiredMixin, PermissionRequiredMixin, View):
+class MyOrdersView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     template_name = 'orders/my-orders.html'
     context_object_name = 'orders'
     permission_required = 'orders.add_order'

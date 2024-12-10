@@ -158,9 +158,9 @@ LOGIN_REDIRECT_URL = 'dash'
 LOGOUT_REDIRECT_URL = 'home'
 
 cloudinary.config(
-    cloud_name=config('CLOUD_NAME'),
-    api_key=config('CLOUD_API_KEY'),
-    api_secret=config('CLOUD_API_SECRET')
+    cloud_name=os.getenv('CLOUD_NAME', config('CLOUD_NAME')),
+    api_key=os.getenv('CLOUD_API_KEY', config('CLOUD_API_KEY')),
+    api_secret=os.getenv('CLOUD_API_SECRET', config('CLOUD_API_SECRET'))
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

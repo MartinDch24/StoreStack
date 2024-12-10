@@ -22,7 +22,9 @@ class CartView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
         return context
 
 
-class AddToCartView(LoginRequiredMixin, View):
+class AddToCartView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'orders.add_orderitem'
+
     def post(self, request, pk):
         try:
             product = Product.objects.get(id=pk)
@@ -110,9 +112,10 @@ class CheckoutView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
         return redirect('dash')
 
 
-class MyOrdersView(LoginRequiredMixin, ListView):
+class MyOrdersView(LoginRequiredMixin, PermissionRequiredMixin, View):
     template_name = 'orders/my-orders.html'
     context_object_name = 'orders'
+    permission_required = 'orders.add_order'
 
     def get_queryset(self):
         user = self.request.user

@@ -11,7 +11,6 @@ class StoreStackUser(AbstractUser):
         max_length=10,
         choices=UserType.choices,
         null=True,
-        blank=True,
     )
 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']

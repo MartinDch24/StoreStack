@@ -8,4 +8,4 @@ class StatusChoices(models.TextChoices):
     SHIPPED = 'shipped', 'Shipped'
     OUT_FOR_DELIVERY = 'out_for_delivery', 'Out For Delivery'
     COMPLETED = 'completed', 'Completed'
-    CANCELED = 'cancelled', 'Cancelled'
+    CANCELED = 'canceled', 'Canceled'

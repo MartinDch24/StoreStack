@@ -1,14 +1,11 @@
-from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, View, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from rest_framework import request
-
 from payments.models import PaymentMethod
 from products.models import Product
 from .choices import StatusChoices
-from .forms import CheckoutForm
+from .forms import CheckoutForm, OrderStatusEditForm
 from .models import Order, OrderItem
 
 
@@ -148,7 +145,7 @@ class OrderedProductsView(LoginRequiredMixin, PermissionRequiredMixin, ListView)
 
 class OrderStatusUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Order
-    fields = ['status']
+    form_class = OrderStatusEditForm
     template_name = 'orders/update-order-status.html'
     permission_required = 'products.add_product'
     success_url = reverse_lazy('dash')
@@ -167,3 +164,8 @@ class OrderStatusUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
         if order:
             return super().get(request, *args, **kwargs)
         return redirect('ordered-products')
+
+    def form_valid(self, form):
+        if self.object.status in [StatusChoices.SINGLE_PRODUCT, StatusChoices.PENDING]:
+            return self.form_invalid(form)
+        return super().form_valid(form)

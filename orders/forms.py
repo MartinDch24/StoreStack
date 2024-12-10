@@ -1,4 +1,7 @@
 from django import forms
+
+from orders.choices import StatusChoices
+from orders.models import Order
 from payments.models import PaymentMethod
 
 
@@ -17,3 +20,20 @@ class CheckoutForm(forms.Form):
                 ]
             else:
                 self.fields['payment_method'].choices = [('', 'No Payment Methods available')]
+
+
+class OrderStatusEditForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['status']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['status'].choices = (
+            ('paid', 'Paid'),
+            ('shipped', 'Shipped'),
+            ('canceled', 'Canceled'),
+            ('out_for_delivery', 'Out For Delivery'),
+            ('completed', 'Completed'),
+        )

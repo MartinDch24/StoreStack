@@ -27,7 +27,7 @@ class Product(models.Model):
             public_ids = [f"{self.image}"]
             try:
                 cloudinary.api.delete_resources(public_ids, resource_type="image", type="upload")
-                cloudinary.api.delete_folder(f"products/{self.name}")
+                cloudinary.api.delete_folder(product_image_folder(self))
             except ApiError as e:
                 print(f"Error deleting Cloudinary resources: {e}")
         return super().delete(*args, **kwargs)

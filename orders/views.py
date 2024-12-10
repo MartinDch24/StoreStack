@@ -7,6 +7,7 @@ from rest_framework import request
 
 from payments.models import PaymentMethod
 from products.models import Product
+from .choices import StatusChoices
 from .forms import CheckoutForm
 from .models import Order, OrderItem
 
@@ -17,7 +18,7 @@ class CartView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        order, created = Order.objects.get_or_create(user=self.request.user, status='pending')
+        order, created = Order.objects.get_or_create(user=self.request.user, status=StatusChoices.PENDING)
         context['order'] = order
         return context
 
@@ -34,7 +35,7 @@ class AddToCartView(LoginRequiredMixin, PermissionRequiredMixin, View):
         if product.seller == request.user:
             return redirect('dash')
 
-        order, created = Order.objects.get_or_create(user=request.user, status="pending")
+        order, created = Order.objects.get_or_create(user=request.user, status=StatusChoices.PENDING)
         order_item = order.items.filter(product=product).first()
 
         if order_item and product.stock:
@@ -50,7 +51,7 @@ class RemoveFromCartView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'orders.delete_orderitem'
 
     def get(self, request, pk):
-        order = Order.objects.filter(user=request.user, status='pending').first()
+        order = Order.objects.filter(user=request.user, status=StatusChoices.PENDING).first()
 
         if order:
             order_item = get_object_or_404(OrderItem, id=pk, order=order)
@@ -73,7 +74,7 @@ class CheckoutView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
             context['products'] = [product]
             context['total_price'] = product.price
         else:
-            order = Order.objects.filter(user=self.request.user, status="pending").first()
+            order = Order.objects.filter(user=self.request.user, status=StatusChoices.PENDING).first()
             if order:
                 context['products'] = order.items.all()
                 context['total_price'] = order.get_total_cost()
@@ -92,27 +93,40 @@ class CheckoutView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
         payment_method_id = form.cleaned_data['payment_method']
         payment_method = get_object_or_404(PaymentMethod, id=payment_method_id, user=request.user)
 
-        order = Order.objects.filter(user=request.user, status='pending').first()
+        order = Order.objects.filter(user=request.user, status=StatusChoices.PENDING).first()
+        product_id = self.kwargs.get('product_id')
 
-        if not order:
-            return redirect('cart')
+        if not order or not order.items.count():
+            if not product_id:
+                return redirect('cart')
 
-        if order.items.count() == 0:
-            return redirect('cart')
+            product = get_object_or_404(Product, id=product_id)
+
+            if product.stock == 0:
+                return redirect('product-detail', pk=product_id)
+
+            order, created = Order.objects.get_or_create(user=request.user, status=StatusChoices.SINGLE_PRODUCT)
+            order_item, created = OrderItem.objects.get_or_create(order=order, product=product, quantity=1, price=product.price)
+            order_item.quantity = 1
+            order_item.save()
 
         for item in order.items.all():
             if item.product.seller == request.user:
                 item.delete()
                 return redirect('checkout')
 
-        order.status = 'paid'
+        order.status = StatusChoices.PAID
         order.payment_method = payment_method
         order.save()
+
+        for item in order.items.all():
+            item.product.stock -= item.quantity
+            item.product.save()
 
         return redirect('dash')
 
 
-class MyOrdersView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+class MyOrdersView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'orders/my-orders.html'
     context_object_name = 'orders'
     permission_required = 'orders.add_order'

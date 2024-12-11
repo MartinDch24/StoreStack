@@ -59,7 +59,7 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     model = Product
     template_name = 'products/product-delete.html'
     context_object_name = 'product'
-    success_url = reverse_lazy('dash')
+    success_url = reverse_lazy('seller-products')
     permission_required = 'products.delete_product'
 
     def dispatch(self, request, *args, **kwargs):

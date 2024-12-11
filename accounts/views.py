@@ -1,6 +1,6 @@
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import FormView, DetailView, DeleteView
@@ -62,6 +62,11 @@ class ProfileEditView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    template_name = 'accounts/change-password.html'
+    success_url = reverse_lazy('profile-detail')
 
 
 class ProfileDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):

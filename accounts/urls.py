@@ -9,6 +9,7 @@ urlpatterns = [
     path('profile/', include([
         path('detail/', views.ProfileDetailView.as_view(), name='profile-detail'),
         path('edit/', views.ProfileEditView.as_view(), name='profile-edit'),
+        path('password-change/', views.CustomPasswordChangeView.as_view(), name='change-password'),
         path('delete/', views.ProfileDeleteView.as_view(), name='profile-delete'),
     ]))
 ]

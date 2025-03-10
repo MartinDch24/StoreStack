@@ -7,6 +7,3 @@ An e-commerce store
   <ul>pip install -r requirements.txt</ul>
   <ul>python manage.py migrate</ul>
   <ul>python manage.py runserver</ul>
-
-### The project is deployed at
-  <a href="storestack-acgyeff6g5cabqhz.italynorth-01.azurewebsites.net">StoreStack</a>
